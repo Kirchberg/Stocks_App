@@ -21,7 +21,11 @@ class MainViewController: UIViewController {
             favouriteSelectLabel.titleLabel?.tintColor = .black
         }
     }
-    @IBOutlet weak var mainTableView: UITableView!
+    @IBOutlet weak var mainTableView: UITableView! {
+        didSet {
+            mainTableView.separatorStyle = .none
+        }
+    }
     override func viewDidLoad() {
         super.viewDidLoad()
     }
@@ -30,6 +34,7 @@ class MainViewController: UIViewController {
 extension MainViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "mainTableViewCell") as! MainTableViewCell
+        cell.layer.cornerRadius = 15.0
         cell.stockImage.image = UIImage(named: "YNDX")
         cell.stockName.text = "YNDX"
         cell.stockPrice.text = "4 764,6 ₽"

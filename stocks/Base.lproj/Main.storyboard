@@ -18,14 +18,14 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="Hoi-P9-kon">
-                                <rect key="frame" x="0.0" y="70" width="320" height="498"/>
+                                <rect key="frame" x="9" y="70" width="302" height="498"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 <prototypes>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="mainTableViewCell" id="gLA-X5-eOG" customClass="MainTableViewCell" customModule="stocks" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="28" width="320" height="68.5"/>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="mainTableViewCell" rowHeight="69" id="gLA-X5-eOG" customClass="MainTableViewCell" customModule="stocks" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="28" width="302" height="69"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="gLA-X5-eOG" id="Glj-b1-qW2">
-                                            <rect key="frame" x="0.0" y="0.0" width="320" height="68.5"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="302" height="69"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Liy-U1-tPE">
@@ -36,7 +36,7 @@
                                                     </constraints>
                                                 </imageView>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Stock Name" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Dew-Ec-185">
-                                                    <rect key="frame" x="72" y="14" width="93" height="24"/>
+                                                    <rect key="frame" x="72" y="14" width="93" height="24.5"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="10" id="g29-3I-DS4"/>
                                                         <constraint firstAttribute="height" constant="24" id="uJd-yj-4vr"/>
@@ -46,7 +46,7 @@
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Company Name" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="mwb-z5-2Yn">
-                                                    <rect key="frame" x="72" y="38" width="103" height="16"/>
+                                                    <rect key="frame" x="72" y="38.5" width="103" height="16"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="16" id="3bk-ds-woR"/>
                                                         <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="10" id="aZl-w0-rEh"/>
@@ -56,7 +56,7 @@
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Stock Price" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="aqV-bP-ta8">
-                                                    <rect key="frame" x="216.5" y="14" width="86.5" height="24"/>
+                                                    <rect key="frame" x="208.5" y="14" width="86.5" height="24"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="10" id="83v-89-fFa"/>
                                                         <constraint firstAttribute="height" constant="24" id="Zys-3f-CfR"/>
@@ -76,11 +76,11 @@
                                                         <action selector="addToFavouriteStock:" destination="gLA-X5-eOG" eventType="touchUpInside" id="DWN-vG-3zV"/>
                                                     </connections>
                                                 </button>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Stock Info" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="NxO-RW-Ude">
-                                                    <rect key="frame" x="243" y="38" width="65" height="16"/>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Stock Info" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="NxO-RW-Ude">
+                                                    <rect key="frame" x="227" y="38" width="65" height="16"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="16" id="KN2-4y-uZb"/>
-                                                        <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="20" id="bqV-P0-ck0"/>
+                                                        <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="10" id="bqV-P0-ck0"/>
                                                     </constraints>
                                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                     <nil key="textColor"/>
@@ -90,13 +90,14 @@
                                             <constraints>
                                                 <constraint firstItem="NxO-RW-Ude" firstAttribute="top" secondItem="aqV-bP-ta8" secondAttribute="bottom" id="47J-WR-lrN"/>
                                                 <constraint firstItem="Liy-U1-tPE" firstAttribute="top" relation="greaterThanOrEqual" secondItem="Glj-b1-qW2" secondAttribute="top" constant="8" id="6xv-tZ-8aN"/>
-                                                <constraint firstAttribute="trailing" secondItem="NxO-RW-Ude" secondAttribute="trailing" constant="12" id="9Ef-3r-tVv"/>
-                                                <constraint firstAttribute="trailing" secondItem="aqV-bP-ta8" secondAttribute="trailing" constant="17" id="DtV-3H-aYf"/>
+                                                <constraint firstAttribute="trailing" secondItem="NxO-RW-Ude" secondAttribute="trailing" constant="10" id="9Ef-3r-tVv"/>
+                                                <constraint firstAttribute="bottom" secondItem="mwb-z5-2Yn" secondAttribute="bottom" constant="14.5" id="AY6-Ah-KlI"/>
+                                                <constraint firstAttribute="trailing" secondItem="aqV-bP-ta8" secondAttribute="trailing" constant="7" id="DtV-3H-aYf"/>
                                                 <constraint firstItem="aqV-bP-ta8" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="Tmx-9n-KCb" secondAttribute="trailing" constant="20" id="Lev-LY-HdI"/>
                                                 <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="Liy-U1-tPE" secondAttribute="bottom" constant="8" id="Qwc-Lx-c5z"/>
                                                 <constraint firstItem="Tmx-9n-KCb" firstAttribute="top" secondItem="Glj-b1-qW2" secondAttribute="topMargin" constant="4" id="RsT-zh-DoB"/>
                                                 <constraint firstItem="mwb-z5-2Yn" firstAttribute="top" secondItem="Dew-Ec-185" secondAttribute="bottom" id="VLq-VJ-QQ6"/>
-                                                <constraint firstItem="NxO-RW-Ude" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="mwb-z5-2Yn" secondAttribute="trailing" constant="26" id="XFJ-ra-ABj"/>
+                                                <constraint firstItem="NxO-RW-Ude" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="mwb-z5-2Yn" secondAttribute="trailing" constant="20" id="XFJ-ra-ABj"/>
                                                 <constraint firstItem="Dew-Ec-185" firstAttribute="leading" secondItem="Liy-U1-tPE" secondAttribute="trailing" constant="12" id="cRD-5f-x1H"/>
                                                 <constraint firstItem="Liy-U1-tPE" firstAttribute="centerY" secondItem="Glj-b1-qW2" secondAttribute="centerY" id="h16-VX-CZW"/>
                                                 <constraint firstItem="Tmx-9n-KCb" firstAttribute="leading" secondItem="Dew-Ec-185" secondAttribute="trailing" constant="6" id="lfO-V6-wUf"/>
@@ -149,9 +150,9 @@
                             <constraint firstItem="OfD-VE-cfN" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="16" id="Fit-2H-9wz"/>
                             <constraint firstItem="Hoi-P9-kon" firstAttribute="top" secondItem="OfD-VE-cfN" secondAttribute="bottom" constant="8" symbolic="YES" id="Fw6-8x-1el"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="OfD-VE-cfN" secondAttribute="trailing" constant="178" id="On8-Sk-EG2"/>
-                            <constraint firstItem="Hoi-P9-kon" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="ZOQ-iu-sPN"/>
+                            <constraint firstItem="Hoi-P9-kon" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="9" id="ZOQ-iu-sPN"/>
                             <constraint firstItem="Hoi-P9-kon" firstAttribute="bottom" secondItem="6Tk-OE-BBY" secondAttribute="bottom" id="gbc-oe-gvQ"/>
-                            <constraint firstItem="Hoi-P9-kon" firstAttribute="trailing" secondItem="6Tk-OE-BBY" secondAttribute="trailing" id="nxL-sj-nQ5"/>
+                            <constraint firstItem="Hoi-P9-kon" firstAttribute="trailing" secondItem="6Tk-OE-BBY" secondAttribute="trailing" constant="-9" id="nxL-sj-nQ5"/>
                         </constraints>
                     </view>
                     <connections>

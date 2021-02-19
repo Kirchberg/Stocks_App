@@ -22,10 +22,10 @@ class MainTableViewCell: UITableViewCell {
     }
     @IBOutlet weak var stockCompanyName: UILabel! {
         didSet {
-                stockCompanyName.font = UIFont(name: "Montserrat-Medium", size: 14)
-                stockCompanyName.textColor = .black
-            }
+            stockCompanyName.font = UIFont(name: "Montserrat-Medium", size: 14)
+            stockCompanyName.textColor = .black
         }
+    }
     @IBOutlet weak var favouriteButton: UIButton! {
         didSet {
             favouriteButton.titleLabel?.text = nil
