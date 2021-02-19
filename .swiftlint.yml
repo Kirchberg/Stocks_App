@@ -1,0 +1,7 @@
+line_length:
+- 200 # warning
+- 300 # error
+disabled_rules:
+- force_cast
+- trailing_whitespace
+- unused_optional_binding
