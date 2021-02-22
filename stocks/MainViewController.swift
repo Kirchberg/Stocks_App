@@ -77,13 +77,19 @@ class MainViewController: UIViewController {
     private func configureUI() {
         configureSearchController()
     }
-    
+
     private func configureSearchController() {
         searchController.delegate = self
         navigationItem.searchController = searchController
         searchController.searchBar.placeholder = "Find company or ticker"
-        searchController.searchBar.searchTextField.font = UIFont(name: "Montserrat-Medium", size: 17)
-        searchController.searchBar.tintColor = UIColor.black
+        searchController.searchBar.searchTextField.font = UIFont(name: "Montserrat-Medium", size: 18)
+        searchController.searchBar.setImage(UIImage(named: "Find"), for: .search, state: .normal)
+        searchController.searchBar.setImage(UIImage(named: "Cancel"), for: .clear, state: .normal)
+        searchController.searchBar.searchTextField.layer.cornerRadius = 13
+        searchController.searchBar.searchTextField.layer.masksToBounds = true
+        searchController.searchBar.searchTextField.layer.borderColor = UIColor.black.cgColor
+        searchController.searchBar.searchTextField.layer.borderWidth = 1
+        searchController.searchBar.tintColor = .black
         searchController.searchBar.sizeToFit()
     }
 }
