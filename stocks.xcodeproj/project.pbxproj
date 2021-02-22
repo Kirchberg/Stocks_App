@@ -130,6 +130,7 @@
 			buildConfigurationList = 42759FCE25DD705F00445ED4 /* Build configuration list for PBXNativeTarget "stocks" */;
 			buildPhases = (
 				B3EB3388581B0A9D95EC77FE /* [CP] Check Pods Manifest.lock */,
+				4222FF1C25E2DE9300953B00 /* ShellScript */,
 				42759FB625DD705C00445ED4 /* Sources */,
 				42759FB725DD705C00445ED4 /* Frameworks */,
 				42759FB825DD705C00445ED4 /* Resources */,
@@ -193,6 +194,23 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
+		4222FF1C25E2DE9300953B00 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/SwiftFormat/CommandLineTool/swiftformat\" \"$SRCROOT\"\n";
+		};
 		42759FDB25DD730100445ED4 /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -389,6 +407,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = A9385EBB565E83853CC7C969 /* Pods-stocks.debug.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = NO;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
@@ -410,6 +429,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = EC437869568233953C03C001 /* Pods-stocks.release.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = NO;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;

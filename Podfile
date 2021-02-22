@@ -7,4 +7,5 @@ target 'stocks' do
 
   # Pods for stocks
   pod 'SwiftLint'
+  pod 'SwiftFormat/CLI'
 end
