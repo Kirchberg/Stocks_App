@@ -33,3 +33,5 @@ DerivedData/
 !*.xcworkspace/contents.xcworkspacedata
 **/xcshareddata/WorkspaceSettings.xcsettings
 *.DS_Store
+Finnhub-Info.plist
+alpha_vantage.txt
