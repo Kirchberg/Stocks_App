@@ -8,6 +8,8 @@
 import UIKit
 
 class MainTableViewCell: UITableViewCell {
+    static let identifier = "mainTableViewCell"
+
     @IBOutlet var stockImage: UIImageView! {
         didSet {
             stockImage.layer.masksToBounds = true

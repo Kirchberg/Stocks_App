@@ -6,8 +6,7 @@ target 'stocks' do
   use_frameworks!
 
   # Pods for stocks
-  #pod 'SwiftLint'
-  #pod 'Alamofire', '~> 5.2'
   pod 'SwiftFormat/CLI'
   pod 'SwiftyJSON', '~> 4.0'
+  pod 'SkeletonView'
 end

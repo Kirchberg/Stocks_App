@@ -159,12 +159,12 @@
 		42759FBC25DD705C00445ED4 /* stocks */ = {
 			isa = PBXGroup;
 			children = (
-				42A4CC8F25DFF9DC0047071C /* Extensions */,
 				42F7DEC125E787F2008E5097 /* Common */,
-				4222FF9825E4205400953B00 /* Controller */,
 				4222FF9725E4204200953B00 /* Service */,
+				4222FF9825E4205400953B00 /* Controller */,
 				4222FF9925E4206100953B00 /* View */,
 				4222FF9B25E4206C00953B00 /* Model */,
+				42A4CC8F25DFF9DC0047071C /* Extensions */,
 				42759FC625DD705F00445ED4 /* Assets.xcassets */,
 				42759FCB25DD705F00445ED4 /* Info.plist */,
 			);

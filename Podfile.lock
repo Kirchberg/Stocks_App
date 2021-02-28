@@ -1,20 +1,24 @@
 PODS:
+  - SkeletonView (1.13.0)
   - SwiftFormat/CLI (0.47.12)
   - SwiftyJSON (4.3.0)
 
 DEPENDENCIES:
+  - SkeletonView
   - SwiftFormat/CLI
   - SwiftyJSON (~> 4.0)
 
 SPEC REPOS:
   trunk:
+    - SkeletonView
     - SwiftFormat
     - SwiftyJSON
 
 SPEC CHECKSUMS:
+  SkeletonView: 2b14cb767a7da384d17d5d7e1db0d55a6cf9566a
   SwiftFormat: 68cac6de69aafb44b60ae49a919600966b0dcabe
   SwiftyJSON: 6faa0040f8b59dead0ee07436cbf76b73c08fd08
 
-PODFILE CHECKSUM: bbd284ea20d38bca564c1e5081d1f6f9269e4573
+PODFILE CHECKSUM: 8e0153a214e4537398fa6fdf126a242da8181c5c
 
 COCOAPODS: 1.10.0

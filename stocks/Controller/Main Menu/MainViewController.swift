@@ -5,6 +5,7 @@
 //  Created by Kirill Kostarev on 17.02.2021.
 //
 
+import SkeletonView
 import UIKit
 
 class MainViewController: UIViewController {
@@ -49,6 +50,8 @@ class MainViewController: UIViewController {
         didSet {
             mainTableView.separatorStyle = .none
             mainTableView.backgroundColor = .white
+            mainTableView.rowHeight = UITableView.automaticDimension
+            mainTableView.estimatedRowHeight = 69
         }
     }
 
@@ -57,10 +60,18 @@ class MainViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         configureUI()
+        mainTableView.isSkeletonable = true
         networkDataFetcher.fetchAllStocks(urlString: urlStocksDataFMP) { stocksData in
             self.stocks = stocksData
-            self.mainTableView.reloadData()
+            self.view.stopSkeletonAnimation()
+            self.view.hideSkeleton(reloadDataAfter: true, transition: .crossDissolve(0.25))
         }
+    }
+
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        view.showAnimatedGradientSkeleton()
+        view.startSkeletonAnimation()
     }
 
     // MARK: - IBActions buttons
@@ -106,11 +117,11 @@ class MainViewController: UIViewController {
     }
 }
 
-// MARK: - UITableViewDataSource(Skeleton of mainTableView)
+// MARK: - UITableViewDataSource(Skeleton of mainTableView), SkeletonTableViewDataSource
 
-extension MainViewController: UITableViewDataSource {
+extension MainViewController: SkeletonTableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "mainTableViewCell") as! MainTableViewCell
+        let cell = tableView.dequeueReusableCell(withIdentifier: MainTableViewCell.identifier) as! MainTableViewCell
         if let stock = stocks[indexPath.row] {
             cell.layer.cornerRadius = 15.0
             cell.stockImage.image = UIImage(named: "YNDX")
@@ -125,6 +136,10 @@ extension MainViewController: UITableViewDataSource {
     func tableView(_: UITableView, numberOfRowsInSection _: Int) -> Int {
         return stocks.count
     }
+
+    func collectionSkeletonView(_: UITableView, cellIdentifierForRowAt _: IndexPath) -> ReusableCellIdentifier {
+        return MainTableViewCell.identifier
+    }
 }
 
 // MARK: - UITableViewDelegate (Customization of mainTableView)
@@ -136,7 +151,7 @@ extension MainViewController: UITableViewDelegate {
         } else {
             cell.backgroundColor = UIColor(rgb: 0xF0F4F7)
         }
-        
+
         finishedLoadingInitialTableCells = firstAppearanceCell(cell, forRowAt: indexPath, for: mainTableView, checkFor: finishedLoadingInitialTableCells)
     }
 }
