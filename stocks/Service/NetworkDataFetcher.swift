@@ -39,11 +39,10 @@ class NetworkDataFetcher {
             let stock = Stock(stockTicker: mostActiveStock[index]["ticker"].stringValue,
                               stockCompanyName: mostActiveStock[index]["companyName"].stringValue,
                               stockPrice: mostActiveStock[index]["price"].stringValue,
-                              stockInfo: mostActiveStock[index]["changesPercentage"].stringValue)
+                              stockInfo: "\(mostActiveStock[index]["changes"].stringValue) \(mostActiveStock[index]["changesPercentage"].stringValue)")
             stocks.append(stock)
+            print(stock.stockTicker)
         }
-        //TODO: - Разобраться с stock.Stock проблемой в главной программе
-        print(stocks)
         return stocks
     }
 }

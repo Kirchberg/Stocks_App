@@ -10,7 +10,8 @@ import UIKit
 class MainViewController: UIViewController {
     // MARK: - Variables
 
-    private let urlStocksData = "https://financialmodelingprep.com/api/v3/stock/actives?apikey=fb14a5b3ada99d60c4b727f546595edb"
+    private let urlStocksDataFMP = "https://financialmodelingprep.com/api/v3/stock/actives?apikey=fb14a5b3ada99d60c4b727f546595edb"
+
     private let networkDataFetcher = NetworkDataFetcher()
     private var stocks = [Stock?]()
 
@@ -23,6 +24,8 @@ class MainViewController: UIViewController {
     private var isFiltering: Bool {
         return searchController.isActive && !isSearchBarEmpty
     }
+
+    private var finishedLoadingInitialTableCells = false
 
     // MARK: - IBOutlets
 
@@ -54,8 +57,9 @@ class MainViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         configureUI()
-        networkDataFetcher.fetchAllStocks(urlString: urlStocksData) { stocksData in
+        networkDataFetcher.fetchAllStocks(urlString: urlStocksDataFMP) { stocksData in
             self.stocks = stocksData
+            self.mainTableView.reloadData()
         }
     }
 
@@ -87,6 +91,7 @@ class MainViewController: UIViewController {
 
     private func configureSearchController() {
         searchController.delegate = self
+        navigationController?.navigationBar.shadowImage = UIImage()
         navigationItem.searchController = searchController
         searchController.searchBar.placeholder = "Find company or ticker"
         searchController.searchBar.searchTextField.font = UIFont(name: "Montserrat-Medium", size: 18)
@@ -104,19 +109,21 @@ class MainViewController: UIViewController {
 // MARK: - UITableViewDataSource(Skeleton of mainTableView)
 
 extension MainViewController: UITableViewDataSource {
-    func tableView(_ tableView: UITableView, cellForRowAt _: IndexPath) -> UITableViewCell {
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "mainTableViewCell") as! MainTableViewCell
-        cell.layer.cornerRadius = 15.0
-//        cell.stockImage.image = UIImage(named: "YNDX")
-//        cell.stockTicker.text = stocks[indexPath.row]?.stockTicker
-//        cell.stockPrice.text = stocks[indexPath.row]?.stockPrice
-//        cell.stockInfo.text = stocks[indexPath.row]?.stockInfo
-//        cell.stockCompanyName.text = stocks[indexPath.row]?.stockCompanyName
+        if let stock = stocks[indexPath.row] {
+            cell.layer.cornerRadius = 15.0
+            cell.stockImage.image = UIImage(named: "YNDX")
+            cell.stockTicker.text = stock.stockTicker
+            cell.stockPrice.text = stock.stockPrice
+            cell.stockInfo.text = stock.stockInfo
+            cell.stockCompanyName.text = stock.stockCompanyName
+        }
         return cell
     }
 
     func tableView(_: UITableView, numberOfRowsInSection _: Int) -> Int {
-        return 10
+        return stocks.count
     }
 }
 
@@ -129,6 +136,8 @@ extension MainViewController: UITableViewDelegate {
         } else {
             cell.backgroundColor = UIColor(rgb: 0xF0F4F7)
         }
+        
+        finishedLoadingInitialTableCells = firstAppearanceCell(cell, forRowAt: indexPath, for: mainTableView, checkFor: finishedLoadingInitialTableCells)
     }
 }
 
