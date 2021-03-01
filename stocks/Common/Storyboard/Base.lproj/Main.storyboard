@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="17701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="ebB-6S-XCw">
-    <device id="retina4_7" orientation="portrait" appearance="light"/>
+    <device id="retina4_0" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17703"/>
@@ -13,22 +13,22 @@
             <objects>
                 <viewController id="BYZ-38-t0r" customClass="MainViewController" customModule="stocks" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="Hoi-P9-kon">
-                                <rect key="frame" x="9" y="102" width="357" height="565"/>
+                                <rect key="frame" x="9" y="102" width="302" height="466"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="mainTableViewCell" id="gLA-X5-eOG" customClass="MainTableViewCell" customModule="stocks" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="28" width="357" height="69"/>
+                                        <rect key="frame" x="0.0" y="28" width="302" height="70"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="gLA-X5-eOG" id="Glj-b1-qW2">
-                                            <rect key="frame" x="0.0" y="0.0" width="357" height="69"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="302" height="70"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Liy-U1-tPE">
-                                                    <rect key="frame" x="8" y="8.5" width="52" height="52"/>
+                                                    <rect key="frame" x="8" y="9" width="52" height="52"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="52" id="IXp-qL-5Rw"/>
                                                         <constraint firstAttribute="width" constant="52" id="KMu-Uu-86N"/>
@@ -38,7 +38,7 @@
                                                     </userDefinedRuntimeAttributes>
                                                 </imageView>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Stock Ticker" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Dew-Ec-185">
-                                                    <rect key="frame" x="72" y="14" width="95" height="24.5"/>
+                                                    <rect key="frame" x="72" y="14" width="95" height="24"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="10" id="g29-3I-DS4"/>
                                                         <constraint firstAttribute="height" constant="24" id="uJd-yj-4vr"/>
@@ -53,11 +53,10 @@
                                                         </userDefinedRuntimeAttribute>
                                                     </userDefinedRuntimeAttributes>
                                                 </label>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Company Name" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="mwb-z5-2Yn">
-                                                    <rect key="frame" x="72" y="38.5" width="103" height="16"/>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Company Name" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="mwb-z5-2Yn">
+                                                    <rect key="frame" x="72" y="38" width="110" height="17.5"/>
                                                     <constraints>
-                                                        <constraint firstAttribute="height" constant="16" id="3bk-ds-woR"/>
-                                                        <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="10" id="aZl-w0-rEh"/>
+                                                        <constraint firstAttribute="width" constant="110" id="aZl-w0-rEh"/>
                                                     </constraints>
                                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                     <nil key="textColor"/>
@@ -70,7 +69,7 @@
                                                     </userDefinedRuntimeAttributes>
                                                 </label>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Stock Price" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="aqV-bP-ta8">
-                                                    <rect key="frame" x="263.5" y="14" width="86.5" height="24"/>
+                                                    <rect key="frame" x="203.5" y="14" width="86.5" height="24"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="10" id="83v-89-fFa"/>
                                                         <constraint firstAttribute="height" constant="24" id="Zys-3f-CfR"/>
@@ -85,13 +84,13 @@
                                                         </userDefinedRuntimeAttribute>
                                                     </userDefinedRuntimeAttributes>
                                                 </label>
-                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Tmx-9n-KCb">
-                                                    <rect key="frame" x="173" y="15" width="16" height="16"/>
+                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Tmx-9n-KCb">
+                                                    <rect key="frame" x="173" y="14" width="16" height="24"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" constant="16" id="GTE-ob-Fvd"/>
-                                                        <constraint firstAttribute="height" constant="16" id="n7F-gB-BdJ"/>
+                                                        <constraint firstAttribute="height" constant="24" id="n7F-gB-BdJ"/>
                                                     </constraints>
-                                                    <state key="normal" title="F" image="favouriteNonSelected"/>
+                                                    <state key="normal" image="favouriteNonSelected"/>
                                                     <userDefinedRuntimeAttributes>
                                                         <userDefinedRuntimeAttribute type="boolean" keyPath="isSkeletonable" value="NO"/>
                                                     </userDefinedRuntimeAttributes>
@@ -100,10 +99,10 @@
                                                     </connections>
                                                 </button>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Stock Info" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="NxO-RW-Ude">
-                                                    <rect key="frame" x="282" y="38" width="65" height="16"/>
+                                                    <rect key="frame" x="192" y="38" width="100" height="16"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="16" id="KN2-4y-uZb"/>
-                                                        <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="10" id="bqV-P0-ck0"/>
+                                                        <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="100" id="bqV-P0-ck0"/>
                                                     </constraints>
                                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                     <nil key="textColor"/>
@@ -121,13 +120,12 @@
                                                 <constraint firstItem="Liy-U1-tPE" firstAttribute="top" relation="greaterThanOrEqual" secondItem="Glj-b1-qW2" secondAttribute="top" constant="8" id="6xv-tZ-8aN"/>
                                                 <constraint firstAttribute="trailing" secondItem="NxO-RW-Ude" secondAttribute="trailing" constant="10" id="9Ef-3r-tVv"/>
                                                 <constraint firstAttribute="bottom" secondItem="mwb-z5-2Yn" secondAttribute="bottom" constant="14.5" id="AY6-Ah-KlI"/>
-                                                <constraint firstAttribute="trailing" secondItem="aqV-bP-ta8" secondAttribute="trailing" constant="7" id="DtV-3H-aYf"/>
+                                                <constraint firstAttribute="trailing" secondItem="aqV-bP-ta8" secondAttribute="trailing" constant="12" id="DtV-3H-aYf"/>
                                                 <constraint firstItem="mwb-z5-2Yn" firstAttribute="leading" secondItem="Dew-Ec-185" secondAttribute="leading" id="HsQ-98-uLr"/>
-                                                <constraint firstItem="aqV-bP-ta8" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="Tmx-9n-KCb" secondAttribute="trailing" constant="20" id="Lev-LY-HdI"/>
+                                                <constraint firstItem="aqV-bP-ta8" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="Tmx-9n-KCb" secondAttribute="trailing" constant="10" id="Lev-LY-HdI"/>
                                                 <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="Liy-U1-tPE" secondAttribute="bottom" constant="8" id="Qwc-Lx-c5z"/>
-                                                <constraint firstItem="Tmx-9n-KCb" firstAttribute="top" secondItem="Glj-b1-qW2" secondAttribute="topMargin" constant="4" id="RsT-zh-DoB"/>
                                                 <constraint firstItem="mwb-z5-2Yn" firstAttribute="top" secondItem="Dew-Ec-185" secondAttribute="bottom" id="VLq-VJ-QQ6"/>
-                                                <constraint firstItem="NxO-RW-Ude" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="mwb-z5-2Yn" secondAttribute="trailing" constant="20" id="XFJ-ra-ABj"/>
+                                                <constraint firstItem="NxO-RW-Ude" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="mwb-z5-2Yn" secondAttribute="trailing" constant="5" id="XFJ-ra-ABj"/>
                                                 <constraint firstItem="Dew-Ec-185" firstAttribute="leading" secondItem="Liy-U1-tPE" secondAttribute="trailing" constant="12" id="cRD-5f-x1H"/>
                                                 <constraint firstItem="Liy-U1-tPE" firstAttribute="centerY" secondItem="Glj-b1-qW2" secondAttribute="centerY" id="h16-VX-CZW"/>
                                                 <constraint firstItem="Tmx-9n-KCb" firstAttribute="leading" secondItem="Dew-Ec-185" secondAttribute="trailing" constant="6" id="lfO-V6-wUf"/>
@@ -135,6 +133,7 @@
                                                 <constraint firstItem="Liy-U1-tPE" firstAttribute="leading" secondItem="Glj-b1-qW2" secondAttribute="leading" constant="8" id="olk-BD-V71"/>
                                                 <constraint firstItem="aqV-bP-ta8" firstAttribute="top" secondItem="Glj-b1-qW2" secondAttribute="top" constant="14" id="tb4-YO-XT6"/>
                                                 <constraint firstItem="Dew-Ec-185" firstAttribute="top" secondItem="Glj-b1-qW2" secondAttribute="top" constant="14" id="vp3-Cc-ICC"/>
+                                                <constraint firstItem="Tmx-9n-KCb" firstAttribute="centerY" secondItem="Dew-Ec-185" secondAttribute="centerY" id="xuO-nv-kUz"/>
                                             </constraints>
                                             <userDefinedRuntimeAttributes>
                                                 <userDefinedRuntimeAttribute type="boolean" keyPath="isSkeletonable" value="YES"/>
@@ -230,7 +229,7 @@
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="ebB-6S-XCw" sceneMemberID="viewController">
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="z6B-gu-p6I">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <color key="tintColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>

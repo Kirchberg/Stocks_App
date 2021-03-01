@@ -50,8 +50,8 @@ class MainViewController: UIViewController {
         didSet {
             mainTableView.separatorStyle = .none
             mainTableView.backgroundColor = .white
-            mainTableView.rowHeight = UITableView.automaticDimension
-            mainTableView.estimatedRowHeight = 69
+            mainTableView.estimatedRowHeight = 100
+            self.mainTableView.rowHeight = UITableView.automaticDimension
         }
     }
 
@@ -63,8 +63,10 @@ class MainViewController: UIViewController {
         mainTableView.isSkeletonable = true
         networkDataFetcher.fetchAllStocks(urlString: urlStocksDataFMP) { stocksData in
             self.stocks = stocksData
-            self.view.stopSkeletonAnimation()
-            self.view.hideSkeleton(reloadDataAfter: true, transition: .crossDissolve(0.25))
+            DispatchQueue.main.async {
+                self.view.stopSkeletonAnimation()
+                self.view.hideSkeleton(reloadDataAfter: true, transition: .crossDissolve(0.25))
+            }
         }
     }
 
