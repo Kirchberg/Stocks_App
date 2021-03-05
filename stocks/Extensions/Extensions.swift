@@ -26,3 +26,25 @@ extension UIColor {
         )
     }
 }
+
+// MARK: - Array
+
+/// Remove duplicates from array
+extension Array where Element: Hashable {
+    /// Remove duplicates from array
+    var orderedSet: Array {
+        var unique = Set<Element>()
+        return filter { element in
+            unique.insert(element).inserted
+        }
+    }
+}
+
+/// Remove element from array
+extension Array where Element: Equatable {
+    /// Remove first collection element that is equal to the given `object`:
+    mutating func removeObject(object: Element) {
+        guard let index = firstIndex(of: object) else { return }
+        remove(at: index)
+    }
+}

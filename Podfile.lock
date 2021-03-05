@@ -1,24 +1,28 @@
 PODS:
+  - Kingfisher (6.1.1)
   - SkeletonView (1.13.0)
   - SwiftFormat/CLI (0.47.12)
   - SwiftyJSON (4.3.0)
 
 DEPENDENCIES:
+  - Kingfisher (~> 6.0)
   - SkeletonView
   - SwiftFormat/CLI
   - SwiftyJSON (~> 4.0)
 
 SPEC REPOS:
   trunk:
+    - Kingfisher
     - SkeletonView
     - SwiftFormat
     - SwiftyJSON
 
 SPEC CHECKSUMS:
+  Kingfisher: 676d63307fbef6ed5d5ed400bff36983480d7500
   SkeletonView: 2b14cb767a7da384d17d5d7e1db0d55a6cf9566a
   SwiftFormat: 68cac6de69aafb44b60ae49a919600966b0dcabe
   SwiftyJSON: 6faa0040f8b59dead0ee07436cbf76b73c08fd08
 
-PODFILE CHECKSUM: 8e0153a214e4537398fa6fdf126a242da8181c5c
+PODFILE CHECKSUM: 416a2b67e19a432f8e714887d93230afe95028b3
 
 COCOAPODS: 1.10.0

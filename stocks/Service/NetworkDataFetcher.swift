@@ -34,14 +34,14 @@ class NetworkDataFetcher {
 
     private func transferJsonToStocksModel(json: JSON) -> [Stock?] {
         var stocks = [Stock]()
+        // TODO: - Сделать ограничение в два символа в валюте и изменениях после запятой
         let mostActiveStock = json["mostActiveStock"]
         for index in 0 ..< mostActiveStock.count {
-            let stock = Stock(stockTicker: mostActiveStock[index]["ticker"].stringValue,
+            let stock = Stock(stockImageURL: "https://finnhub.io/api/logo?symbol=\(mostActiveStock[index]["ticker"].stringValue)", stockTicker: mostActiveStock[index]["ticker"].stringValue,
                               stockCompanyName: mostActiveStock[index]["companyName"].stringValue,
                               stockPrice: mostActiveStock[index]["price"].stringValue,
                               stockInfo: "\(mostActiveStock[index]["changes"].stringValue) \(mostActiveStock[index]["changesPercentage"].stringValue)")
             stocks.append(stock)
-            print(stock.stockTicker)
         }
         return stocks
     }

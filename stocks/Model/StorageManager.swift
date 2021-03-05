@@ -7,4 +7,5 @@
 
 import Foundation
 
+// TODO: - Save favourite list
 class StorageManager {}

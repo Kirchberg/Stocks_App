@@ -9,4 +9,5 @@ target 'stocks' do
   pod 'SwiftFormat/CLI'
   pod 'SwiftyJSON', '~> 4.0'
   pod 'SkeletonView'
+  pod 'Kingfisher', '~> 6.0'
 end

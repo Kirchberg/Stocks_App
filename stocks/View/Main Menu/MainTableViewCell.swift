@@ -26,7 +26,7 @@ class MainTableViewCell: UITableViewCell {
 
     @IBOutlet var stockCompanyName: UILabel! {
         didSet {
-            stockCompanyName.font = UIFont(name: "Montserrat-Medium", size: 14)
+            stockCompanyName.font = UIFont(name: "Montserrat-SemiBold", size: 12)
             stockCompanyName.textColor = .black
         }
     }
@@ -47,7 +47,7 @@ class MainTableViewCell: UITableViewCell {
 
     @IBOutlet var stockInfo: UILabel! {
         didSet {
-            stockInfo.font = UIFont(name: "Montserrat-Medium", size: 14)
+            stockInfo.font = UIFont(name: "Montserrat-SemiBold", size: 12)
             stockInfo.textColor = .black
         }
     }
@@ -62,6 +62,4 @@ class MainTableViewCell: UITableViewCell {
 
         // Configure the view for the selected state
     }
-
-    @IBAction func addToFavouriteStock(_: UIButton) {}
 }

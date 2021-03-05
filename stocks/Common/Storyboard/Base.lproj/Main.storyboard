@@ -95,7 +95,7 @@
                                                         <userDefinedRuntimeAttribute type="boolean" keyPath="isSkeletonable" value="NO"/>
                                                     </userDefinedRuntimeAttributes>
                                                     <connections>
-                                                        <action selector="addToFavouriteStock:" destination="gLA-X5-eOG" eventType="touchUpInside" id="DWN-vG-3zV"/>
+                                                        <action selector="addStockToFavourite:" destination="BYZ-38-t0r" eventType="touchUpInside" id="XKW-LX-ECd"/>
                                                     </connections>
                                                 </button>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Stock Info" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="NxO-RW-Ude">
@@ -215,8 +215,8 @@
                     <navigationItem key="navigationItem" title="Stocks" id="tRn-jd-OgO"/>
                     <connections>
                         <outlet property="favouriteSelectButton" destination="9If-I7-H0d" id="ARU-Eu-pst"/>
-                        <outlet property="mainTableView" destination="Hoi-P9-kon" id="Czd-Qf-ZvZ"/>
                         <outlet property="stocksSelectButton" destination="zC0-dD-i34" id="E5I-Ka-0QO"/>
+                        <outlet property="tableView" destination="Hoi-P9-kon" id="Czd-Qf-ZvZ"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
