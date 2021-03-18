@@ -5,6 +5,7 @@
 //  Created by Kirill Kostarev on 19.02.2021.
 //
 
+import RealmSwift
 import UIKit
 
 // MARK: - UIColor extension for tableView cells
@@ -27,6 +28,25 @@ extension UIColor {
     }
 }
 
+// MARK: - String
+
+extension String {
+    /// Round the number after the decimal point to two digits
+    mutating func roundToTwoSymbols() -> String {
+        return String(format: "%.2f", Double(self)!)
+    }
+
+    func isEmpty() -> Bool {
+        let str = filter { !" ".contains($0) }
+        return (str == "") ? true : false
+    }
+}
+
+extension StringProtocol {
+    var firstUppercased: String { return prefix(1).uppercased() + dropFirst() }
+    var firstCapitalized: String { return prefix(1).capitalized + dropFirst() }
+}
+
 // MARK: - Array
 
 /// Remove duplicates from array
@@ -46,5 +66,21 @@ extension Array where Element: Equatable {
     mutating func removeObject(object: Element) {
         guard let index = firstIndex(of: object) else { return }
         remove(at: index)
+    }
+
+    func contains(array: [Stock]) -> Bool {
+        for item in array {
+            if !contains(item.stockTicker as! Element) { return false }
+        }
+        return true
+    }
+}
+
+extension Results {
+    /// Convert Realm Results to array
+    func toArray() -> [Element] {
+        return compactMap {
+            $0
+        }
     }
 }

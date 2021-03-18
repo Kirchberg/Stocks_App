@@ -10,4 +10,6 @@ target 'stocks' do
   pod 'SwiftyJSON', '~> 4.0'
   pod 'SkeletonView'
   pod 'Kingfisher', '~> 6.0'
+  #pod 'RealmSwift'
+  #pod 'Alamofire', '~> 5.2'
 end

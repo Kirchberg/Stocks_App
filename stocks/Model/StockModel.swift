@@ -6,25 +6,18 @@
 //
 
 import Foundation
+import RealmSwift
 
-class Stock: Decodable, Hashable {
-    static func == (lhs: Stock, rhs: Stock) -> Bool {
-        return lhs.stockCompanyName == rhs.stockCompanyName && lhs.stockTicker == rhs.stockTicker
-    }
+class Stock: Object {
+    @objc dynamic var stockImageURL: String? = ""
+    @objc dynamic var stockTicker: String? = ""
+    @objc dynamic var stockCompanyName: String? = ""
+    @objc dynamic var stockPrice: String? = ""
+    @objc dynamic var stockInfo: String? = ""
+    @objc dynamic var stockFavourite: Bool = false
 
-    func hash(into hasher: inout Hasher) {
-        hasher.combine(stockCompanyName)
-        hasher.combine(stockTicker)
-    }
-
-    var stockImageURL: String?
-    var stockTicker: String
-    var stockCompanyName: String
-    var stockPrice: String
-    var stockInfo: String
-    var stockFavourite: Bool
-
-    init(stockImageURL: String?, stockTicker: String, stockCompanyName: String, stockPrice: String, stockInfo: String, stockFavourite: Bool = false) {
+    convenience init(stockImageURL: String?, stockTicker: String?, stockCompanyName: String?, stockPrice: String?, stockInfo: String?, stockFavourite: Bool = false) {
+        self.init()
         self.stockImageURL = stockImageURL
         self.stockTicker = stockTicker
         self.stockCompanyName = stockCompanyName

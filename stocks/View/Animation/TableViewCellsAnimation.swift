@@ -7,8 +7,9 @@
 
 import UIKit
 
-// MARK: - Implementation of the default UITableViewCell appearance animation
+// MARK: - Cell
 
+/// Implementation of the default UITableViewCell appearance animation
 public func firstAppearanceCell(_ cell: UITableViewCell, forRowAt indexPath: IndexPath, for tableView: UITableView!, checkFor finishedLoadingInitialTableCells: Bool) -> Bool {
     var finishedLoadingInitialTableCells = finishedLoadingInitialTableCells
     var lastInitialDisplayableCell = false
@@ -32,4 +33,13 @@ public func firstAppearanceCell(_ cell: UITableViewCell, forRowAt indexPath: Ind
         }, completion: nil)
     }
     return finishedLoadingInitialTableCells
+}
+
+// MARK: - UITableVIew
+
+extension UITableView {
+    /// Simple UITableView reload data but with cross dissolve transition
+    func reloadDataWithAnimation() {
+        UIView.transition(with: self, duration: 0.35, options: .transitionCrossDissolve, animations: { self.reloadData() }, completion: nil)
+    }
 }
