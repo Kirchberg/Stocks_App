@@ -32,6 +32,8 @@ DerivedData/
 !*.xcodeproj/xcshareddata/
 !*.xcworkspace/contents.xcworkspacedata
 **/xcshareddata/WorkspaceSettings.xcsettings
+
+### Other ###
 *.DS_Store
-Finnhub-Info.plist
-alpha_vantage.txt
+Pods/
+

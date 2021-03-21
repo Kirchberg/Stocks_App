@@ -76,15 +76,7 @@ class MainViewController: UIViewController {
         configureUI()
         favouriteStocks = realm.objects(Stock.self)
         tableView.isSkeletonable = true
-        networkDataFetcher.fetchAllStocks(urlString: urlStocksDataFMP) { stocksData in
-            self.stocks = stocksData
-            self.checkForExistingStocks(in: self.stocks)
-            // TODO: - Get from Finnhub currency
-            DispatchQueue.main.async {
-                self.view.stopSkeletonAnimation()
-                self.view.hideSkeleton(reloadDataAfter: true, transition: .crossDissolve(0.25))
-            }
-        }
+        startFetchingStocks()
     }
 
     override func viewDidAppear(_ animated: Bool) {
@@ -104,13 +96,13 @@ class MainViewController: UIViewController {
     @IBAction func favouriteButtonClicked(_: UIButton) {
         changeStyleOfButtons(disable: stocksSelectButton, enable: favouriteSelectButton)
         isFavourite = true
-        tableView.reloadData()
+        tableView.reloadDataWithAnimation()
     }
 
     @IBAction func stocksButtonClicked(_: UIButton) {
         changeStyleOfButtons(disable: favouriteSelectButton, enable: stocksSelectButton)
         isFavourite = false
-        tableView.reloadData()
+        tableView.reloadDataWithAnimation()
     }
 
     @IBAction func addStockToFavourite(_ sender: UIButton) {
@@ -118,7 +110,6 @@ class MainViewController: UIViewController {
         let indexPath = tableView.indexPathForRow(at: buttonPosition)
 
         guard let row = indexPath?.row else {
-            print("Error: Can't get row")
             return
         }
 
@@ -137,6 +128,7 @@ class MainViewController: UIViewController {
                                            stockTicker: stockFromSearch.stockTicker,
                                            stockCompanyName: stockFromSearch.stockCompanyName,
                                            stockPrice: stockFromSearch.stockPrice,
+                                           stockCurrency: stockFromSearch.stockCurrency,
                                            stockInfo: stockFromSearch.stockInfo,
                                            stockFavourite: stockFromSearch.stockFavourite)
                 StorageManager.saveStockObject(favouriteStock)
@@ -162,6 +154,7 @@ class MainViewController: UIViewController {
                                                stockTicker: stock.stockTicker,
                                                stockCompanyName: stock.stockCompanyName,
                                                stockPrice: stock.stockPrice,
+                                               stockCurrency: stock.stockCurrency,
                                                stockInfo: stock.stockInfo,
                                                stockFavourite: stock.stockFavourite)
                     sender.setImage(UIImage(named: "favouriteSelected"), for: .normal)
@@ -232,9 +225,55 @@ class MainViewController: UIViewController {
                                            stockTicker: stock.stockTicker,
                                            stockCompanyName: stock.stockCompanyName,
                                            stockPrice: stock.stockPrice,
+                                           stockCurrency: stock.stockCurrency,
                                            stockInfo: stock.stockInfo,
                                            stockFavourite: stock.stockFavourite)
                 StorageManager.updateStockObject(update: foundElem, to: favouriteStock)
+            }
+        }
+    }
+
+    private func setStockData(_ finishDataTask: @escaping () -> Void) {
+        let group = DispatchGroup()
+        let dispatchQueue = DispatchQueue.global(qos: .default)
+        let semaphore = DispatchSemaphore(value: 0)
+
+        dispatchQueue.async(group: group) {
+            self.networkDataFetcher.fetchAllStocks(urlString: self.urlStocksDataFMP) { stocksData in
+                self.stocks = stocksData
+                semaphore.signal()
+            }
+
+            semaphore.wait()
+
+            semaphore.signal()
+            for stock in self.stocks {
+                guard let stock = stock else { return }
+                guard let stockTicker = stock.stockTicker else {
+                    semaphore.signal()
+                    return
+                }
+
+                self.networkDataFetcher.fetchStocksCurrency(stockTicker: stockTicker) { stockWithCurrency in
+                    guard let stockWithCurrency = stockWithCurrency else { return }
+                    guard let stockCurrency = stockWithCurrency.stockCurrency else { return }
+                    stock.stockCurrency = CurrencyConverter.getSymbol(forCurrencyCode: stockCurrency)
+                    stock.stockFullPrice = "\(stock.stockCurrency ?? "$")\(stock.stockPrice ?? "")"
+                    semaphore.signal()
+                }
+                semaphore.wait()
+            }
+            semaphore.wait()
+            finishDataTask()
+        }
+    }
+
+    private func startFetchingStocks() {
+        setStockData {
+            DispatchQueue.main.async {
+                self.checkForExistingStocks(in: self.stocks)
+                self.view.stopSkeletonAnimation()
+                self.view.hideSkeleton(reloadDataAfter: true, transition: .crossDissolve(0.25))
             }
         }
     }
@@ -261,7 +300,7 @@ extension MainViewController: SkeletonTableViewDataSource {
             }
 
             cell.stockCompanyName.text = stock.stockCompanyName
-            cell.stockPrice.text = stock.stockPrice
+            cell.stockPrice.text = stock.stockFullPrice
             cell.stockInfo.text = stock.stockInfo
 
             if cell.stockInfo.text?.contains("+") == true {
@@ -345,8 +384,7 @@ extension MainViewController: UISearchResultsUpdating, UISearchBarDelegate {
     }
 
     private func filterContentForSearchText(_ searchText: String) {
-        print("Text searched: \(searchText)")
-        networkDataFetcher.search(searchText: searchText) {
+        networkDataFetcher.searchStocksData(searchText: searchText) {
             resultData in
             var searchStocksData = resultData
             for stock in searchStocksData {
