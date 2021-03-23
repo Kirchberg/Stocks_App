@@ -33,7 +33,11 @@ extension UIColor {
 extension String {
     /// Round the number after the decimal point to two digits
     mutating func roundToTwoSymbols() -> String {
-        return String(format: "%.2f", Double(self)!)
+        if let self = Double(self) {
+            return String(format: "%.2f", self)
+        } else {
+            return self
+        }
     }
 
     func isEmpty() -> Bool {

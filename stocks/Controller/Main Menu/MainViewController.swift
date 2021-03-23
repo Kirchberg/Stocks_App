@@ -13,8 +13,6 @@ import UIKit
 class MainViewController: UIViewController {
     // MARK: - Variables
 
-    private let urlStocksDataFMP = "https://financialmodelingprep.com/api/v3/stock/actives?apikey=fb14a5b3ada99d60c4b727f546595edb"
-
     private let networkDataFetcher = NetworkDataFetcher()
 
     private var stocks = [Stock?]()
@@ -35,6 +33,7 @@ class MainViewController: UIViewController {
 
     private var previousRun = Date()
     private let minInterval = 0.5
+    private weak var searchDelayer: Timer?
 
     private var isFiltering: Bool {
         return searchController.isActive && !isSearchBarEmpty
@@ -116,6 +115,7 @@ class MainViewController: UIViewController {
         if isFiltering {
             guard let stockFromSearch = searchResults[row] else { return }
             if stockFromSearch.stockFavourite {
+                stockFromSearch.stockFavourite = false
                 sender.setImage(UIImage(named: "favouriteNonSelected"), for: .normal)
                 StorageManager.deleteStockObject(stockFromSearch)
                 if let stock = stocks.first(where: { $0?.stockTicker == stockFromSearch.stockTicker }) {
@@ -239,7 +239,8 @@ class MainViewController: UIViewController {
         let semaphore = DispatchSemaphore(value: 0)
 
         dispatchQueue.async(group: group) {
-            self.networkDataFetcher.fetchAllStocks(urlString: self.urlStocksDataFMP) { stocksData in
+            let urlString: String = FMP.mostActiveStocksURL
+            self.networkDataFetcher.fetchAllStocks(urlString: urlString) { stocksData in
                 self.stocks = stocksData
                 semaphore.signal()
             }
@@ -253,8 +254,9 @@ class MainViewController: UIViewController {
                     semaphore.signal()
                     return
                 }
+                let urlString = FMP.createCompanyProfileURL(for: stockTicker, isSearching: false)
 
-                self.networkDataFetcher.fetchStocksCurrency(stockTicker: stockTicker) { stockWithCurrency in
+                self.networkDataFetcher.fetchStocksCurrency(urlString: urlString) { stockWithCurrency in
                     guard let stockWithCurrency = stockWithCurrency else { return }
                     guard let stockCurrency = stockWithCurrency.stockCurrency else { return }
                     stock.stockCurrency = CurrencyConverter.getSymbol(forCurrencyCode: stockCurrency)
@@ -348,24 +350,7 @@ extension MainViewController: UISearchControllerDelegate {
 }
 
 extension MainViewController: UISearchResultsUpdating, UISearchBarDelegate {
-    func updateSearchResults(for searchController: UISearchController) {
-        if !isSearchBarEmpty {
-            if Date().timeIntervalSince(previousRun) > minInterval {
-                previousRun = Date()
-                favouriteSelectButton.isHidden = true
-                UIView.transition(with: tableView, duration: 0.35, options: .transitionCrossDissolve, animations: {
-                    self.stocksSelectButton.titleLabel?.font = UIFont(name: "Montserrat-Bold", size: 18)
-                    self.stocksSelectButton.titleLabel?.tintColor = .black
-                    self.stocksSelectButton.titleLabel?.adjustsFontSizeToFitWidth = true
-                    self.stocksSelectButton.isUserInteractionEnabled = false
-                }, completion: nil)
-                searchResults = searchStocksByTickerOrCompanyName(searchController).orderedSet
-                filterContentForSearchText(searchController.searchBar.text!)
-            }
-        } else {
-            searchResults = stocks
-        }
-    }
+    func updateSearchResults(for _: UISearchController) {}
 
     private func searchStocksByTickerOrCompanyName(_ searchController: UISearchController) -> [Stock?] {
         let searchText = searchController.searchBar.text
@@ -383,32 +368,97 @@ extension MainViewController: UISearchResultsUpdating, UISearchBarDelegate {
         return tempSearchResultsByStockTicker
     }
 
-    private func filterContentForSearchText(_ searchText: String) {
-        networkDataFetcher.searchStocksData(searchText: searchText) {
-            resultData in
-            var searchStocksData = resultData
-            for stock in searchStocksData {
-                guard let stockTicker = stock?.stockTicker else { return }
-                let tupleStocks = self.findStock(find: stockTicker, in: self.stocks)
+    func searchBar(_: UISearchBar, textDidChange searchText: String) {
+        searchDelayer?.invalidate()
+        searchDelayer = nil
+        if !isSearchBarEmpty {
+            favouriteSelectButton.isHidden = true
+            UIView.transition(with: tableView, duration: 0.35, options: .transitionCrossDissolve, animations: {
+                self.stocksSelectButton.titleLabel?.font = UIFont(name: "Montserrat-Bold", size: 18)
+                self.stocksSelectButton.titleLabel?.tintColor = .black
+                self.stocksSelectButton.titleLabel?.adjustsFontSizeToFitWidth = true
+                self.stocksSelectButton.isUserInteractionEnabled = false
+            }, completion: nil)
+            searchResults = searchStocksByTickerOrCompanyName(searchController).orderedSet
+            searchDelayer = Timer.scheduledTimer(timeInterval: 2.0,
+                                                 target: self,
+                                                 selector: #selector(filterContentForSearchText(_:)),
+                                                 userInfo: searchText,
+                                                 repeats: false)
+        } else {
+            searchResults = stocks
+        }
+    }
 
-                if tupleStocks.isStockExist {
-                    searchStocksData.removeAll {
-                        $0?.stockTicker == tupleStocks.matchStock?.stockTicker
-                    }
-                }
+    @objc func filterContentForSearchText(_ t: Timer) {
+        if t == searchDelayer {
+            let group = DispatchGroup()
+            let dispatchQueue = DispatchQueue.global(qos: .background)
+            let semaphore = DispatchSemaphore(value: 0)
 
-                if let favouriteStocksArray = self.favouriteStocks?.toArray() {
-                    let tupleFavouriteStocks = self.findStock(find: stockTicker, in: favouriteStocksArray)
-                    if tupleFavouriteStocks.isStockExist {
-                        if let stock = searchStocksData.first(where: { $0?.stockTicker == tupleFavouriteStocks.matchStock?.stockTicker }) {
-                            stock?.stockFavourite = true
+            var searchStocksData = [Stock?]()
+
+            guard let searchText = searchDelayer?.userInfo as? String else { return }
+
+            if !searchText.isEmpty() {
+                dispatchQueue.async(group: group) {
+                    self.networkDataFetcher.searchStocksData(for: searchText) {
+                        resultData in
+                        searchStocksData = resultData
+                        for stock in searchStocksData {
+                            guard let stockTicker = stock?.stockTicker else {
+                                semaphore.signal()
+                                return
+                            }
+                            let tupleStocks = self.findStock(find: stockTicker, in: self.stocks)
+
+                            if tupleStocks.isStockExist {
+                                searchStocksData.removeAll {
+                                    $0?.stockTicker == tupleStocks.matchStock?.stockTicker
+                                }
+                            }
+
+                            if let favouriteStocksArray = self.favouriteStocks?.toArray() {
+                                let tupleFavouriteStocks = self.findStock(find: stockTicker, in: favouriteStocksArray)
+                                if tupleFavouriteStocks.isStockExist {
+                                    if let stock = searchStocksData.first(where: { $0?.stockTicker == tupleFavouriteStocks.matchStock?.stockTicker }) {
+                                        stock?.stockFavourite = true
+                                    }
+                                }
+                            }
                         }
+                        semaphore.signal()
+                    }
+
+                    semaphore.wait()
+
+                    semaphore.signal()
+                    for stock in searchStocksData {
+                        guard let stock = stock else { return }
+                        guard let stockTicker = stock.stockTicker else { return }
+                        let urlString: String = FMP.createCompanyQuoteURL(for: stockTicker)
+                        self.networkDataFetcher.fetchStocksCurrency(urlString: urlString) { stockWithCurrency in
+                            guard let stockWithCurrency = stockWithCurrency else {
+                                semaphore.signal()
+                                return
+                            }
+                            stock.stockCurrency = "$"
+                            stock.stockPrice = stockWithCurrency.stockPrice
+                            stock.stockInfo = stockWithCurrency.stockInfo
+                            stock.stockFullPrice = "\(stock.stockCurrency ?? "")\(stock.stockPrice ?? "")"
+                            semaphore.signal()
+                        }
+                        semaphore.wait()
+                    }
+                    semaphore.wait()
+
+                    DispatchQueue.main.async {
+                        self.searchResults.append(contentsOf: searchStocksData)
+                        self.searchResults = self.searchResults.orderedSet
+                        self.searchDelayer = nil
                     }
                 }
             }
-            self.searchResults.append(contentsOf: searchStocksData)
-            self.searchResults = self.searchResults.orderedSet
-            self.tableView.reloadDataWithAnimation()
         }
     }
 

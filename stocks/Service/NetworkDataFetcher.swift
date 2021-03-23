@@ -44,12 +44,7 @@ class NetworkDataFetcher {
         return stocks
     }
 
-    func fetchStocksCurrency(stockTicker: String, completion: @escaping (Stock?) -> Void) {
-        // TODO: - В случае исчерпания трафика заменить на следующую ссылку
-        let urlString: String = "https://financialmodelingprep.com/api/v3/profile/\(stockTicker)?apikey=b2859da1e61df36a04795a628e792d69"
-
-//        let urlString = "https://financialmodelingprep.com/api/v3/profile/\(stockTicker)?apikey=3d682b15093addc2b3ce3f20249ec11a"
-
+    func fetchStocksCurrency(urlString: String, completion: @escaping (Stock?) -> Void) {
         networkService.requestAllStocks(urlString: urlString) { data, error in
             guard error == nil else {
                 return
@@ -59,21 +54,31 @@ class NetworkDataFetcher {
                 return
             }
 
-            let jsonObject = try! JSON(data: dataFromNetworking)
-            completion(self.transferJsonToCurrencyStockModel(json: jsonObject))
+            let json = try! JSON(data: dataFromNetworking)
+            completion(self.transferJsonToCurrencyStockModel(jsonObject: json))
         }
     }
 
-    private func transferJsonToCurrencyStockModel(json: JSON) -> Stock? {
-        let stock = Stock(stockCurrency: json[0]["currency"].stringValue)
+    private func transferJsonToCurrencyStockModel(jsonObject: JSON) -> Stock? {
+        var json = jsonObject
+        var stock: Stock?
+        if json[0]["changesPercentage"].stringValue.contains("-") {
+            stock = Stock(stockPrice: json[0]["price"].stringValue.roundToTwoSymbols(),
+                          stockCurrency: json[0]["currency"].stringValue,
+                          stockInfo: "\(json[0]["change"].stringValue.roundToTwoSymbols()) (\(json[0]["changesPercentage"].stringValue)%)")
+        } else {
+            stock = Stock(stockPrice: json[0]["price"].stringValue.roundToTwoSymbols(),
+                          stockCurrency: json[0]["currency"].stringValue,
+                          stockInfo: "\(json[0]["change"].stringValue.roundToTwoSymbols()) (+\(json[0]["changesPercentage"].stringValue)%)")
+        }
         return stock
     }
 
     // MARK: - Search
 
     /// Search function to retrieve data from search bar
-    func searchStocksData(searchText: String, completion: @escaping ([Stock?]) -> Void) {
-        let urlString: String = "https://financialmodelingprep.com/api/v3/search?query=\(searchText)&limit=10&exchange=NASDAQ&apikey=b2859da1e61df36a04795a628e792d69"
+    func searchStocksData(for searchText: String, completion: @escaping ([Stock?]) -> Void) {
+        let urlString: String = FMP.createTickerSearchURL(for: searchText)
 
         networkService.requestAllStocks(urlString: urlString) { data, error in
             guard error == nil else {
@@ -94,7 +99,8 @@ class NetworkDataFetcher {
         for index in 0 ..< json.count {
             let stock = Stock(stockImageURL: "https://financialmodelingprep.com/image-stock/\(json[index]["symbol"].stringValue).png",
                               stockTicker: json[index]["symbol"].stringValue,
-                              stockCompanyName: json[index]["name"].stringValue)
+                              stockCompanyName: json[index]["name"].stringValue,
+                              stockCurrency: "$")
             stocks.append(stock)
         }
         return stocks

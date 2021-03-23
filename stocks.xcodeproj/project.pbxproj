@@ -15,6 +15,7 @@
 		4222FF5425E3B81700953B00 /* StockModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4222FF5325E3B81700953B00 /* StockModel.swift */; };
 		4222FF8D25E3FF0400953B00 /* NetworkService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4222FF8C25E3FF0400953B00 /* NetworkService.swift */; };
 		42449DE02607C7FC005D4036 /* CurrencyConverter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42449DDF2607C7FC005D4036 /* CurrencyConverter.swift */; };
+		42449DF72609E98A005D4036 /* FMP-API-Keys.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42449DF62609E98A005D4036 /* FMP-API-Keys.swift */; };
 		4267982525E78A5200871704 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4267982425E78A5200871704 /* SceneDelegate.swift */; };
 		4267983C25E7915200871704 /* StorageManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4267983B25E7915200871704 /* StorageManager.swift */; };
 		426E48CA25EABC3E00183163 /* NetworkDataFetcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 426E48C925EABC3E00183163 /* NetworkDataFetcher.swift */; };
@@ -36,6 +37,7 @@
 		4222FF5325E3B81700953B00 /* StockModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StockModel.swift; sourceTree = "<group>"; };
 		4222FF8C25E3FF0400953B00 /* NetworkService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkService.swift; sourceTree = "<group>"; };
 		42449DDF2607C7FC005D4036 /* CurrencyConverter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrencyConverter.swift; sourceTree = "<group>"; };
+		42449DF62609E98A005D4036 /* FMP-API-Keys.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FMP-API-Keys.swift"; sourceTree = "<group>"; };
 		4267982425E78A5200871704 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = SceneDelegate.swift; path = ../SceneDelegate.swift; sourceTree = "<group>"; };
 		4267983B25E7915200871704 /* StorageManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StorageManager.swift; sourceTree = "<group>"; };
 		426E48C925EABC3E00183163 /* NetworkDataFetcher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkDataFetcher.swift; sourceTree = "<group>"; };
@@ -91,6 +93,7 @@
 			children = (
 				4222FF8C25E3FF0400953B00 /* NetworkService.swift */,
 				426E48C925EABC3E00183163 /* NetworkDataFetcher.swift */,
+				42449DF92609F45A005D4036 /* Helpers */,
 			);
 			path = Service;
 			sourceTree = "<group>";
@@ -119,6 +122,15 @@
 				4267983B25E7915200871704 /* StorageManager.swift */,
 			);
 			path = Model;
+			sourceTree = "<group>";
+		};
+		42449DF92609F45A005D4036 /* Helpers */ = {
+			isa = PBXGroup;
+			children = (
+				42449DF62609E98A005D4036 /* FMP-API-Keys.swift */,
+				42449DDF2607C7FC005D4036 /* CurrencyConverter.swift */,
+			);
+			path = Helpers;
 			sourceTree = "<group>";
 		};
 		4267982E25E78B6D00871704 /* Storyboard */ = {
@@ -192,7 +204,6 @@
 			children = (
 				4217E1A226036FCC00F23C17 /* Fonts */,
 				42A4CC9C25E018090047071C /* Extensions.swift */,
-				42449DDF2607C7FC005D4036 /* CurrencyConverter.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -362,6 +373,7 @@
 				4267982525E78A5200871704 /* SceneDelegate.swift in Sources */,
 				4222FF8D25E3FF0400953B00 /* NetworkService.swift in Sources */,
 				42759FC225DD705C00445ED4 /* MainViewController.swift in Sources */,
+				42449DF72609E98A005D4036 /* FMP-API-Keys.swift in Sources */,
 				4222FF5425E3B81700953B00 /* StockModel.swift in Sources */,
 				42759FBE25DD705C00445ED4 /* AppDelegate.swift in Sources */,
 				426E48FB25EBAD9D00183163 /* TableViewCellsAnimation.swift in Sources */,
