@@ -307,8 +307,14 @@ extension MainViewController: SkeletonTableViewDataSource {
 
             if cell.stockInfo.text?.contains("+") == true {
                 cell.stockInfo.textColor = UIColor(rgb: 0x24B25D)
+                if let startIndex = cell.stockInfo.text?.startIndex {
+                    cell.stockInfo.text?.insert(contentsOf: "+\(stock.stockCurrency ?? "+$")", at: startIndex)
+                }
             } else {
                 cell.stockInfo.textColor = UIColor(rgb: 0xB22424)
+                if let startIndex = cell.stockInfo.text?.startIndex {
+                    cell.stockInfo.text?.insert(contentsOf: "\(stock.stockCurrency ?? "$")", at: cell.stockInfo.text?.index(startIndex, offsetBy: 1) ?? startIndex)
+                }
             }
         }
         return cell
