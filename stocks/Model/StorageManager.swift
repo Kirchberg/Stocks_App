@@ -21,12 +21,13 @@ enum StorageManager {
         }
         let predicate = NSPredicate(format: "stockTicker == %@", stockTicker)
         let array = realm.objects(Stock.self).filter(predicate)
-        try! realm.write {
-            if array.count == 0 {
+        if array.count == 0 {
+            try! realm.write {
                 realm.add(stock)
-            } else {
-                StorageManager.updateStockObject(update: stock, to: array.first!)
             }
+        } else {
+            guard let stockFromArray = array.first else { return }
+            StorageManager.updateStockObject(update: stockFromArray, to: stock)
         }
     }
 
@@ -48,8 +49,11 @@ enum StorageManager {
     /// Update stock with new info
     static func updateStockObject(update oldInfostock: Stock, to newInfostock: Stock) {
         try! realm.write {
+            oldInfostock.stockCompanyName = newInfostock.stockCompanyName
             oldInfostock.stockFavourite = newInfostock.stockFavourite
             oldInfostock.stockPrice = newInfostock.stockPrice
+            oldInfostock.stockCurrency = newInfostock.stockCurrency
+            oldInfostock.stockFullPrice = "\(newInfostock.stockCurrency ?? "")\(newInfostock.stockPrice ?? "")"
             oldInfostock.stockInfo = newInfostock.stockInfo
         }
     }

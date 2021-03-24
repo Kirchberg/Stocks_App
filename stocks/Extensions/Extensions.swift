@@ -34,7 +34,7 @@ extension String {
     /// Round the number after the decimal point to two digits
     mutating func roundToTwoSymbols() -> String {
         if let self = Double(self) {
-            return String(format: "%.2f", self)
+            return String(format: "%.1f", self)
         } else {
             return self
         }

@@ -31,8 +31,6 @@ class MainViewController: UIViewController {
         return text.isEmpty()
     }
 
-    private var previousRun = Date()
-    private let minInterval = 0.5
     private weak var searchDelayer: Timer?
 
     private var isFiltering: Bool {
@@ -104,6 +102,7 @@ class MainViewController: UIViewController {
         tableView.reloadDataWithAnimation()
     }
 
+    /// Function that responsible for logic favourite button
     @IBAction func addStockToFavourite(_ sender: UIButton) {
         let buttonPosition = sender.convert(CGPoint(), to: tableView)
         let indexPath = tableView.indexPathForRow(at: buttonPosition)
@@ -112,9 +111,13 @@ class MainViewController: UIViewController {
             return
         }
 
+        // If we are searching stocks via searchBar
         if isFiltering {
             guard let stockFromSearch = searchResults[row] else { return }
+
+            // If we need to check if stock is in favourite
             if stockFromSearch.stockFavourite {
+                // Set to false if we tapped button
                 stockFromSearch.stockFavourite = false
                 sender.setImage(UIImage(named: "favouriteNonSelected"), for: .normal)
                 StorageManager.deleteStockObject(stockFromSearch)
@@ -122,6 +125,7 @@ class MainViewController: UIViewController {
                     stock?.stockFavourite = false
                 }
             } else {
+                // If it's not set favourite to true
                 stockFromSearch.stockFavourite = true
                 sender.setImage(UIImage(named: "favouriteSelected"), for: .normal)
                 let favouriteStock = Stock(stockImageURL: stockFromSearch.stockImageURL,
@@ -134,7 +138,9 @@ class MainViewController: UIViewController {
                 StorageManager.saveStockObject(favouriteStock)
             }
         } else {
+            // If we are in favourite tab
             if isFavourite {
+                // Then just simply delete from phone information about stock
                 guard let favouriteElem = favouriteStocks?[row] else { return }
                 guard let stockFavouriteTicker = favouriteElem.stockTicker else { return }
                 if let stock = stocks.first(where: { $0?.stockTicker == stockFavouriteTicker }) {
@@ -143,12 +149,17 @@ class MainViewController: UIViewController {
                 StorageManager.deleteStockObject(favouriteElem)
                 tableView.reloadDataWithAnimation()
             } else if !isFavourite {
+                // Else we are on main menu
                 guard let stock = stocks[row] else { return }
+
+                // If we need to check if stock is in favourite
                 if stock.stockFavourite {
+                    // Set to false if we tapped button
                     stock.stockFavourite = false
                     sender.setImage(UIImage(named: "favouriteNonSelected"), for: .normal)
                     StorageManager.deleteStockObject(stock)
                 } else {
+                    // If it's not set favourite to true
                     stock.stockFavourite = true
                     let favouriteStock = Stock(stockImageURL: stock.stockImageURL,
                                                stockTicker: stock.stockTicker,
@@ -197,6 +208,7 @@ class MainViewController: UIViewController {
         searchController.searchBar.sizeToFit()
     }
 
+    /// Function to find stock object in some array
     private func findStock(find key: String, in array: [Stock?]) -> (isStockExist: Bool, matchStock: Stock?) {
         guard key != "" else { return (false, nil) }
         let filteredArray = array.filter { (stock: Stock?) -> Bool in
@@ -211,15 +223,16 @@ class MainViewController: UIViewController {
         return (!filteredArray.isEmpty, stock)
     }
 
+    /// Function to check if some stocks from favourite is already exists in fetched array from API
     private func checkForExistingStocks(in stocksData: [Stock?]) {
-        guard let tempFavouriteStocks = favouriteStocks?.toArray() else { return }
-        guard tempFavouriteStocks.count > 0 else { return }
+        guard let favouriteStocks = favouriteStocks else { return }
+        guard favouriteStocks.count > 0 else { return }
         stocksData.forEach { stock in
             guard let stock = stock else { return }
-            guard let stockTicker = stock.stockTicker else { return }
-            let (isExist, foundElem) = findStock(find: stockTicker, in: tempFavouriteStocks)
-            if isExist {
-                guard let foundElem = foundElem else { return }
+
+            if favouriteStocks.contains(where: { (favouriteStock) -> Bool in
+                favouriteStock.stockTicker == stock.stockTicker
+            }) {
                 stock.stockFavourite = true
                 let favouriteStock = Stock(stockImageURL: stock.stockImageURL,
                                            stockTicker: stock.stockTicker,
@@ -228,16 +241,18 @@ class MainViewController: UIViewController {
                                            stockCurrency: stock.stockCurrency,
                                            stockInfo: stock.stockInfo,
                                            stockFavourite: stock.stockFavourite)
-                StorageManager.updateStockObject(update: foundElem, to: favouriteStock)
+                StorageManager.saveStockObject(favouriteStock)
             }
         }
     }
 
+    /// Function to fetch most active stocks from API
     private func setStockData(_ finishDataTask: @escaping () -> Void) {
         let group = DispatchGroup()
         let dispatchQueue = DispatchQueue.global(qos: .default)
         let semaphore = DispatchSemaphore(value: 0)
 
+        // Retrieve general data about most active stocks from API
         dispatchQueue.async(group: group) {
             let urlString: String = FMP.mostActiveStocksURL
             self.networkDataFetcher.fetchAllStocks(urlString: urlString) { stocksData in
@@ -247,6 +262,7 @@ class MainViewController: UIViewController {
 
             semaphore.wait()
 
+            // Retreive currency of fetched most active stocks due to not possible to get from first request because of restrictions in API
             semaphore.signal()
             for stock in self.stocks {
                 guard let stock = stock else { return }
@@ -358,6 +374,7 @@ extension MainViewController: UISearchControllerDelegate {
 extension MainViewController: UISearchResultsUpdating, UISearchBarDelegate {
     func updateSearchResults(for _: UISearchController) {}
 
+    /// Function to search stocks by ticker or company name
     private func searchStocksByTickerOrCompanyName(_ searchController: UISearchController) -> [Stock?] {
         let searchText = searchController.searchBar.text
         var tempSearchResultsByStockTicker = stocks.filter { stock in
@@ -375,6 +392,7 @@ extension MainViewController: UISearchResultsUpdating, UISearchBarDelegate {
     }
 
     func searchBar(_: UISearchBar, textDidChange searchText: String) {
+        // Destroy timer for input text from searchBar
         searchDelayer?.invalidate()
         searchDelayer = nil
         if !isSearchBarEmpty {
@@ -386,7 +404,8 @@ extension MainViewController: UISearchResultsUpdating, UISearchBarDelegate {
                 self.stocksSelectButton.isUserInteractionEnabled = false
             }, completion: nil)
             searchResults = searchStocksByTickerOrCompanyName(searchController).orderedSet
-            searchDelayer = Timer.scheduledTimer(timeInterval: 2.0,
+            // After the timer has expired timeInterval, start fetch stocks by searchText
+            searchDelayer = Timer.scheduledTimer(timeInterval: 1.0,
                                                  target: self,
                                                  selector: #selector(filterContentForSearchText(_:)),
                                                  userInfo: searchText,
@@ -396,7 +415,9 @@ extension MainViewController: UISearchResultsUpdating, UISearchBarDelegate {
         }
     }
 
+    /// Function to retrieve data from text in search bar
     @objc func filterContentForSearchText(_ t: Timer) {
+        // If timer expires, then start
         if t == searchDelayer {
             let group = DispatchGroup()
             let dispatchQueue = DispatchQueue.global(qos: .background)
@@ -407,6 +428,7 @@ extension MainViewController: UISearchResultsUpdating, UISearchBarDelegate {
             guard let searchText = searchDelayer?.userInfo as? String else { return }
 
             if !searchText.isEmpty() {
+                // Retrieve general data (ticker, company name) that match to searchText
                 dispatchQueue.async(group: group) {
                     self.networkDataFetcher.searchStocksData(for: searchText) {
                         resultData in
@@ -416,16 +438,22 @@ extension MainViewController: UISearchResultsUpdating, UISearchBarDelegate {
                                 semaphore.signal()
                                 return
                             }
+
+                            // Find stocks that already exists in main menu
                             let tupleStocks = self.findStock(find: stockTicker, in: self.stocks)
 
+                            // If we have them, then remove searched data
                             if tupleStocks.isStockExist {
                                 searchStocksData.removeAll {
                                     $0?.stockTicker == tupleStocks.matchStock?.stockTicker
                                 }
                             }
 
+                            // Find stocks that already exists in favourite
                             if let favouriteStocksArray = self.favouriteStocks?.toArray() {
                                 let tupleFavouriteStocks = self.findStock(find: stockTicker, in: favouriteStocksArray)
+
+                                // If we have them, then set to favourite in searched resuls
                                 if tupleFavouriteStocks.isStockExist {
                                     if let stock = searchStocksData.first(where: { $0?.stockTicker == tupleFavouriteStocks.matchStock?.stockTicker }) {
                                         stock?.stockFavourite = true
@@ -438,6 +466,7 @@ extension MainViewController: UISearchResultsUpdating, UISearchBarDelegate {
 
                     semaphore.wait()
 
+                    // Retrieve other important information (price, currency and information) about fetched stocks
                     semaphore.signal()
                     for stock in searchStocksData {
                         guard let stock = stock else { return }
@@ -460,6 +489,12 @@ extension MainViewController: UISearchResultsUpdating, UISearchBarDelegate {
 
                     DispatchQueue.main.async {
                         self.searchResults.append(contentsOf: searchStocksData)
+                        self.searchResults.removeAll { stock in
+                            guard let stock = stock else { return false }
+                            guard let stockInfo = stock.stockInfo else { return false }
+                            guard let stockPrice = stock.stockPrice else { return false }
+                            return (stockPrice == "") || (stockInfo == "") || stockInfo.contains("0.0")
+                        }
                         self.searchResults = self.searchResults.orderedSet
                         self.searchDelayer = nil
                     }

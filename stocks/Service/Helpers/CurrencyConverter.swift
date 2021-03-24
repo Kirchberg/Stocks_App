@@ -7,7 +7,9 @@
 
 import Foundation
 
+/// Class to format currency from name to symbol code
 class CurrencyConverter {
+    /// Function to format currency from name to symbol code
     static func getSymbol(forCurrencyCode code: String) -> String {
         var candidates: [String] = []
         let locales: [String] = NSLocale.availableLocaleIdentifiers

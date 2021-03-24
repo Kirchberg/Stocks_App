@@ -7,7 +7,9 @@
 
 import Foundation
 
+/// Class to make request from API
 class NetworkService {
+    /// Function to request objects from API
     func requestAllStocks(urlString: String, completion: @escaping (Data?, Error?) -> Void) {
         guard let url = URL(string: urlString) else { return }
         var request = URLRequest(url: url)
