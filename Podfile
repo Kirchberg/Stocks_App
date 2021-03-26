@@ -11,4 +11,6 @@ target 'stocks' do
   pod 'SkeletonView'
   pod 'Kingfisher', '~> 6.0'
   pod 'GradientLoadingBar', '~> 2.0'
+  pod 'PMAlertController'
+
 end

@@ -27,6 +27,7 @@
 		42B4DB3F260DE4A500FD305C /* Montserrat_Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 42B4DB3C260DE4A500FD305C /* Montserrat_Bold.ttf */; };
 		42B4DB40260DE4A500FD305C /* Montserrat_Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 42B4DB3D260DE4A500FD305C /* Montserrat_Medium.ttf */; };
 		42B4DB41260DE4A500FD305C /* Montserrat_SemiBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 42B4DB3E260DE4A500FD305C /* Montserrat_SemiBold.ttf */; };
+		42BDBBA1260E519F0091B267 /* CustomAlertView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42BDBBA0260E519F0091B267 /* CustomAlertView.swift */; };
 		DAA443D98F6E7085448107D9 /* Pods_stocks.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5592975B3311A7A4D0627437 /* Pods_stocks.framework */; };
 /* End PBXBuildFile section */
 
@@ -51,6 +52,7 @@
 		42B4DB3C260DE4A500FD305C /* Montserrat_Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = Montserrat_Bold.ttf; path = stocks/Extensions/Montserrat_Bold.ttf; sourceTree = SOURCE_ROOT; };
 		42B4DB3D260DE4A500FD305C /* Montserrat_Medium.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = Montserrat_Medium.ttf; path = stocks/Extensions/Montserrat_Medium.ttf; sourceTree = SOURCE_ROOT; };
 		42B4DB3E260DE4A500FD305C /* Montserrat_SemiBold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = Montserrat_SemiBold.ttf; path = stocks/Extensions/Montserrat_SemiBold.ttf; sourceTree = SOURCE_ROOT; };
+		42BDBBA0260E519F0091B267 /* CustomAlertView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomAlertView.swift; sourceTree = "<group>"; };
 		5592975B3311A7A4D0627437 /* Pods_stocks.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_stocks.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		A9385EBB565E83853CC7C969 /* Pods-stocks.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-stocks.debug.xcconfig"; path = "Target Support Files/Pods-stocks/Pods-stocks.debug.xcconfig"; sourceTree = "<group>"; };
 		EC437869568233953C03C001 /* Pods-stocks.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-stocks.release.xcconfig"; path = "Target Support Files/Pods-stocks/Pods-stocks.release.xcconfig"; sourceTree = "<group>"; };
@@ -101,6 +103,7 @@
 			children = (
 				4267983325E78E2400871704 /* Main Menu */,
 				426E48FD25EBADA600183163 /* Animation */,
+				42BDBBA0260E519F0091B267 /* CustomAlertView.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -370,6 +373,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				42A4CC9D25E018090047071C /* Extensions.swift in Sources */,
+				42BDBBA1260E519F0091B267 /* CustomAlertView.swift in Sources */,
 				4267982525E78A5200871704 /* SceneDelegate.swift in Sources */,
 				4222FF8D25E3FF0400953B00 /* NetworkService.swift in Sources */,
 				42759FC225DD705C00445ED4 /* MainViewController.swift in Sources */,
