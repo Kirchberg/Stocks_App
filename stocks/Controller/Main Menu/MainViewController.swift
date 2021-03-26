@@ -460,19 +460,19 @@ extension MainViewController: UISearchResultsUpdating, UISearchBarDelegate {
         filterContentForSearchText(t) { searchStocksData in
             DispatchQueue.main.async {
                 self.gradientLoadingBar.fadeOut()
-                guard searchStocksData.count > 0 else {
-                    CustomAlertView.showError(title: "We're sorry", description: "But there's no result :(") { alertVC in
-                        self.searchController.present(alertVC, animated: true, completion: nil)
-                    }
-                    return
-                }
                 self.searchResults.append(contentsOf: searchStocksData)
                 self.searchResults = self.searchResults.unique
                 self.searchResults.removeAll { stock in
                     guard let stock = stock else { return false }
                     guard let stockInfo = stock.stockInfo else { return false }
                     guard let stockPrice = stock.stockPrice else { return false }
-                    return (stockPrice == "") || (stockInfo == "") || stockInfo.contains("0.0")
+                    return (stockPrice == "") || (stockInfo == "")
+                }
+                guard self.searchResults.count > 0 else {
+                    CustomAlertView.showError(title: "We're sorry", description: "But there's no result :(") { alertVC in
+                        self.searchController.present(alertVC, animated: true, completion: nil)
+                    }
+                    return
                 }
                 self.searchDelayer = nil
             }

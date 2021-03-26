@@ -65,11 +65,11 @@ class NetworkDataFetcher {
         if json[0]["changesPercentage"].stringValue.contains("-") {
             stock = Stock(stockPrice: json[0]["price"].stringValue.roundToTwoSymbols(),
                           stockCurrency: json[0]["currency"].stringValue,
-                          stockInfo: "\(json[0]["change"].stringValue.roundToTwoSymbols()) (\(json[0]["changesPercentage"].stringValue)%)")
+                          stockInfo: "\(json[0]["change"].stringValue) (\(json[0]["changesPercentage"].stringValue)%)")
         } else {
             stock = Stock(stockPrice: json[0]["price"].stringValue.roundToTwoSymbols(),
                           stockCurrency: json[0]["currency"].stringValue,
-                          stockInfo: "\(json[0]["change"].stringValue.roundToTwoSymbols()) (+\(json[0]["changesPercentage"].stringValue)%)")
+                          stockInfo: "\(json[0]["change"].stringValue) (+\(json[0]["changesPercentage"].stringValue)%)")
         }
         return stock
     }
