@@ -440,7 +440,7 @@ extension MainViewController: UISearchResultsUpdating, UISearchBarDelegate {
                                 return
                             }
                             stock.stockCurrency = "$"
-                            stock.stockPrice = stockWithCurrency.stockPrice
+                            stock.stockPrice = stockWithCurrency.stockPrice?.roundToTwoSymbols()
                             stock.stockInfo = stockWithCurrency.stockInfo
                             stock.stockFullPrice = "\(stock.stockCurrency ?? "")\(stock.stockPrice ?? "")"
                             self.findInFavouriteStocks(stock)
