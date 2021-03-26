@@ -5,6 +5,7 @@
 //  Created by Kirill Kostarev on 17.02.2021.
 //
 
+import GradientLoadingBar
 import Kingfisher
 import RealmSwift
 import SkeletonView
@@ -14,6 +15,8 @@ class MainViewController: UIViewController {
     // MARK: - Variables
 
     private let networkDataFetcher = NetworkDataFetcher()
+
+    private let gradientLoadingBar = GradientLoadingBar()
 
     private var stocks = [Stock?]()
     private var favouriteStocks: Results<Stock>?
@@ -36,8 +39,6 @@ class MainViewController: UIViewController {
     private var isFiltering: Bool {
         return searchController.isActive && !isSearchBarEmpty
     }
-
-    private var finishedLoadingInitialTableCells = false
 
     // MARK: - IBOutlets
 
@@ -208,41 +209,11 @@ class MainViewController: UIViewController {
         searchController.searchBar.sizeToFit()
     }
 
-    /// Function to find stock object in some array
-    private func findStock(find key: String, in array: [Stock?]) -> (isStockExist: Bool, matchStock: Stock?) {
-        guard key != "" else { return (false, nil) }
-        let filteredArray = array.filter { (stock: Stock?) -> Bool in
-            if let stock = stock {
-                guard let stockTicker = stock.stockTicker else { return false }
-                return stockTicker.lowercased().elementsEqual(key.lowercased())
-            } else {
-                return false
-            }
-        }
-        guard let stock = filteredArray.first else { return (false, nil) }
-        return (!filteredArray.isEmpty, stock)
-    }
-
     /// Function to check if some stocks from favourite is already exists in fetched array from API
     private func checkForExistingStocks(in stocksData: [Stock?]) {
-        guard let favouriteStocks = favouriteStocks else { return }
-        guard favouriteStocks.count > 0 else { return }
         stocksData.forEach { stock in
             guard let stock = stock else { return }
-
-            if favouriteStocks.contains(where: { (favouriteStock) -> Bool in
-                favouriteStock.stockTicker == stock.stockTicker
-            }) {
-                stock.stockFavourite = true
-                let favouriteStock = Stock(stockImageURL: stock.stockImageURL,
-                                           stockTicker: stock.stockTicker,
-                                           stockCompanyName: stock.stockCompanyName,
-                                           stockPrice: stock.stockPrice,
-                                           stockCurrency: stock.stockCurrency,
-                                           stockInfo: stock.stockInfo,
-                                           stockFavourite: stock.stockFavourite)
-                StorageManager.saveStockObject(favouriteStock)
-            }
+            findInFavouriteStocks(stock)
         }
     }
 
@@ -286,6 +257,7 @@ class MainViewController: UIViewController {
         }
     }
 
+    /// Function to retrieve data from API when app launched
     private func startFetchingStocks() {
         setStockData {
             DispatchQueue.main.async {
@@ -293,6 +265,25 @@ class MainViewController: UIViewController {
                 self.view.stopSkeletonAnimation()
                 self.view.hideSkeleton(reloadDataAfter: true, transition: .crossDissolve(0.25))
             }
+        }
+    }
+
+    /// Function to find stocks that already exists in favourite. If we find a stock, thne update it in DB.
+    private func findInFavouriteStocks(_ stock: Stock) {
+        guard let favouriteStocks = self.favouriteStocks else { return }
+        guard favouriteStocks.count > 0 else { return }
+        if favouriteStocks.contains(where: { (favouriteStock) -> Bool in
+            favouriteStock.stockTicker == stock.stockTicker
+        }) {
+            stock.stockFavourite = true
+            let favouriteStock = Stock(stockImageURL: stock.stockImageURL,
+                                       stockTicker: stock.stockTicker,
+                                       stockCompanyName: stock.stockCompanyName,
+                                       stockPrice: stock.stockPrice,
+                                       stockCurrency: stock.stockCurrency,
+                                       stockInfo: stock.stockInfo,
+                                       stockFavourite: stock.stockFavourite)
+            StorageManager.saveStockObject(favouriteStock)
         }
     }
 }
@@ -321,15 +312,15 @@ extension MainViewController: SkeletonTableViewDataSource {
             cell.stockPrice.text = stock.stockFullPrice
             cell.stockInfo.text = stock.stockInfo
 
-            if cell.stockInfo.text?.contains("+") == true {
-                cell.stockInfo.textColor = UIColor(rgb: 0x24B25D)
-                if let startIndex = cell.stockInfo.text?.startIndex {
-                    cell.stockInfo.text?.insert(contentsOf: "+\(stock.stockCurrency ?? "+$")", at: startIndex)
-                }
-            } else {
-                cell.stockInfo.textColor = UIColor(rgb: 0xB22424)
-                if let startIndex = cell.stockInfo.text?.startIndex {
-                    cell.stockInfo.text?.insert(contentsOf: "\(stock.stockCurrency ?? "$")", at: cell.stockInfo.text?.index(startIndex, offsetBy: 1) ?? startIndex)
+            if var cellStockInfoText = cell.stockInfo.text {
+                if cellStockInfoText.contains("+") == true {
+                    cell.stockInfo.textColor = UIColor(rgb: 0x24B25D)
+                    cell.stockInfo.text?.insert(contentsOf: "+\(stock.stockCurrency ?? "+$")", at: cellStockInfoText.startIndex)
+                } else {
+                    cell.stockInfo.textColor = UIColor(rgb: 0xB22424)
+                    if cellStockInfoText.startIndex < cellStockInfoText.endIndex {
+                        cellStockInfoText.insert(contentsOf: "\(stock.stockCurrency ?? "$")", at: cellStockInfoText.index(cellStockInfoText.startIndex, offsetBy: 1))
+                    }
                 }
             }
         }
@@ -354,8 +345,6 @@ extension MainViewController: UITableViewDelegate {
         } else {
             cell.backgroundColor = UIColor(red: 0.941, green: 0.955, blue: 0.97, alpha: 1)
         }
-
-        finishedLoadingInitialTableCells = firstAppearanceCell(cell, forRowAt: indexPath, for: tableView, checkFor: finishedLoadingInitialTableCells)
     }
 }
 
@@ -375,20 +364,19 @@ extension MainViewController: UISearchResultsUpdating, UISearchBarDelegate {
     func updateSearchResults(for _: UISearchController) {}
 
     /// Function to search stocks by ticker or company name
-    private func searchStocksByTickerOrCompanyName(_ searchController: UISearchController) -> [Stock?] {
-        let searchText = searchController.searchBar.text
-        var tempSearchResultsByStockTicker = stocks.filter { stock in
-            guard let stock = stock else { return false }
-            guard let stockTicker = stock.stockTicker else { return false }
-            return stockTicker.lowercased().contains(searchText!.lowercased())
+    private func searchStocksByTickerOrCompanyName(_ searchController: UISearchController) {
+        guard let searchText = searchController.searchBar.text?.lowercased() else { return }
+
+        var predicateStockTicker = NSPredicate()
+        var predicateStockCompanyName = NSPredicate()
+
+        searchResults = stocks.filter { stock in
+            guard let stockTicker = stock?.stockTicker else { return false }
+            guard let stockCompanyName = stock?.stockCompanyName else { return false }
+            predicateStockTicker = NSPredicate(format: "SELF CONTAINS %@", searchText)
+            predicateStockCompanyName = NSPredicate(format: "SELF CONTAINS %@", searchText)
+            return predicateStockTicker.evaluate(with: stockTicker.lowercased()) || predicateStockCompanyName.evaluate(with: stockCompanyName.lowercased())
         }
-        let tempSearchResultsByCompanyName = stocks.filter { stock in
-            guard let stock = stock else { return false }
-            guard let stockCompanyName = stock.stockCompanyName else { return false }
-            return stockCompanyName.lowercased().contains(searchText!.lowercased())
-        }
-        tempSearchResultsByStockTicker.append(contentsOf: tempSearchResultsByCompanyName)
-        return tempSearchResultsByStockTicker
     }
 
     func searchBar(_: UISearchBar, textDidChange searchText: String) {
@@ -403,11 +391,12 @@ extension MainViewController: UISearchResultsUpdating, UISearchBarDelegate {
                 self.stocksSelectButton.titleLabel?.adjustsFontSizeToFitWidth = true
                 self.stocksSelectButton.isUserInteractionEnabled = false
             }, completion: nil)
-            searchResults = searchStocksByTickerOrCompanyName(searchController).orderedSet
+            searchStocksByTickerOrCompanyName(searchController)
+
             // After the timer has expired timeInterval, start fetch stocks by searchText
             searchDelayer = Timer.scheduledTimer(timeInterval: 1.0,
                                                  target: self,
-                                                 selector: #selector(filterContentForSearchText(_:)),
+                                                 selector: #selector(setSearchData(_:)),
                                                  userInfo: searchText,
                                                  repeats: false)
         } else {
@@ -415,10 +404,11 @@ extension MainViewController: UISearchResultsUpdating, UISearchBarDelegate {
         }
     }
 
-    /// Function to retrieve data from text in search bar
-    @objc func filterContentForSearchText(_ t: Timer) {
+    /// Function to retrieve data from text in search bar after timeInterval expires
+    private func filterContentForSearchText(_ t: Timer, _ completion: @escaping ([Stock?]) -> Void) {
         // If timer expires, then start
         if t == searchDelayer {
+            gradientLoadingBar.fadeIn()
             let group = DispatchGroup()
             let dispatchQueue = DispatchQueue.global(qos: .background)
             let semaphore = DispatchSemaphore(value: 0)
@@ -433,34 +423,6 @@ extension MainViewController: UISearchResultsUpdating, UISearchBarDelegate {
                     self.networkDataFetcher.searchStocksData(for: searchText) {
                         resultData in
                         searchStocksData = resultData
-                        for stock in searchStocksData {
-                            guard let stockTicker = stock?.stockTicker else {
-                                semaphore.signal()
-                                return
-                            }
-
-                            // Find stocks that already exists in main menu
-                            let tupleStocks = self.findStock(find: stockTicker, in: self.stocks)
-
-                            // If we have them, then remove searched data
-                            if tupleStocks.isStockExist {
-                                searchStocksData.removeAll {
-                                    $0?.stockTicker == tupleStocks.matchStock?.stockTicker
-                                }
-                            }
-
-                            // Find stocks that already exists in favourite
-                            if let favouriteStocksArray = self.favouriteStocks?.toArray() {
-                                let tupleFavouriteStocks = self.findStock(find: stockTicker, in: favouriteStocksArray)
-
-                                // If we have them, then set to favourite in searched resuls
-                                if tupleFavouriteStocks.isStockExist {
-                                    if let stock = searchStocksData.first(where: { $0?.stockTicker == tupleFavouriteStocks.matchStock?.stockTicker }) {
-                                        stock?.stockFavourite = true
-                                    }
-                                }
-                            }
-                        }
                         semaphore.signal()
                     }
 
@@ -481,24 +443,32 @@ extension MainViewController: UISearchResultsUpdating, UISearchBarDelegate {
                             stock.stockPrice = stockWithCurrency.stockPrice
                             stock.stockInfo = stockWithCurrency.stockInfo
                             stock.stockFullPrice = "\(stock.stockCurrency ?? "")\(stock.stockPrice ?? "")"
+                            self.findInFavouriteStocks(stock)
                             semaphore.signal()
                         }
                         semaphore.wait()
                     }
                     semaphore.wait()
 
-                    DispatchQueue.main.async {
-                        self.searchResults.append(contentsOf: searchStocksData)
-                        self.searchResults.removeAll { stock in
-                            guard let stock = stock else { return false }
-                            guard let stockInfo = stock.stockInfo else { return false }
-                            guard let stockPrice = stock.stockPrice else { return false }
-                            return (stockPrice == "") || (stockInfo == "") || stockInfo.contains("0.0")
-                        }
-                        self.searchResults = self.searchResults.orderedSet
-                        self.searchDelayer = nil
-                    }
+                    completion(searchStocksData)
                 }
+            }
+        }
+    }
+
+    @objc func setSearchData(_ t: Timer) {
+        filterContentForSearchText(t) { searchStocksData in
+            DispatchQueue.main.async {
+                self.gradientLoadingBar.fadeOut()
+                self.searchResults.append(contentsOf: searchStocksData)
+                self.searchResults = self.searchResults.unique
+                self.searchResults.removeAll { stock in
+                    guard let stock = stock else { return false }
+                    guard let stockInfo = stock.stockInfo else { return false }
+                    guard let stockPrice = stock.stockPrice else { return false }
+                    return (stockPrice == "") || (stockInfo == "") || stockInfo.contains("0.0")
+                }
+                self.searchDelayer = nil
             }
         }
     }

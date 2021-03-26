@@ -64,6 +64,21 @@ extension Array where Element: Hashable {
     }
 }
 
+extension Array where Element == Stock? {
+    var unique: [Element] {
+        var uniqueValues: [Element] = []
+        forEach { item in
+            guard let itemStockTicker = item?.stockTicker else { return }
+            guard !uniqueValues.contains(where: { (stock) -> Bool in
+                guard let stockTicker = stock?.stockTicker else { return false }
+                return stockTicker.contains(itemStockTicker)
+            }) else { return }
+            uniqueValues.append(item)
+        }
+        return uniqueValues
+    }
+}
+
 /// Remove element from array
 extension Array where Element: Equatable {
     /// Remove first collection element that is equal to the given `object`:
