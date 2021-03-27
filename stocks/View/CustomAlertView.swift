@@ -8,7 +8,9 @@
 import Foundation
 import PMAlertController
 
+/// Struct to generate Custom UIAlertController
 struct CustomAlertView {
+    ///Function to show error message
     static func showError(title: String, description: String, present: @escaping (PMAlertController) -> Void) {
         let alertVC = PMAlertController(title: title, description: description, image: UIImage(named: "no_result"), style: .alert)
 
