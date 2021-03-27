@@ -30,8 +30,8 @@
 * [SwiftyJSON](https://github.com/SwiftyJSON/SwiftyJSON) – для упрощения работы с JSON с целью повышения читаемости и уменьшения написания громоздкого кода;
 * [SkeletonView](https://github.com/Juanpe/SkeletonView) – при обработке данных из интернета пользователю необходимо показывать вместо пустого tableView экран загрузки;
 * [Kingfisher](https://github.com/onevcat/Kingfisher) – для обработки и кэширования фотографий акций;
-
-## Проблемы, которые возникли при решении задания
+* [GradientLoadingBar](https://github.com/fxm90/GradientLoadingBar) – для появления полосы загрузки при обработке запроса из API во время поиска;
+* [PMAlertController](https://github.com/pmusolino/PMAlertController) – для создания и появления собственного UIAlertController при ошибке.
 
 ## Установка
 В терминале поэтапно выполняем следующие команды:
