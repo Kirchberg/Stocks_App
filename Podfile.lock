@@ -1,16 +1,40 @@
 PODS:
-  - SwiftLint (0.42.0)
+  - GradientLoadingBar (2.1.0):
+    - LightweightObservable (~> 2.1)
+  - Kingfisher (6.1.1)
+  - LightweightObservable (2.1.2)
+  - PMAlertController (4.0.1)
+  - SkeletonView (1.13.0)
+  - SwiftFormat/CLI (0.47.12)
+  - SwiftyJSON (4.3.0)
 
 DEPENDENCIES:
-  - SwiftLint
+  - GradientLoadingBar (~> 2.0)
+  - Kingfisher (~> 6.0)
+  - PMAlertController
+  - SkeletonView
+  - SwiftFormat/CLI
+  - SwiftyJSON (~> 4.0)
 
 SPEC REPOS:
   trunk:
-    - SwiftLint
+    - GradientLoadingBar
+    - Kingfisher
+    - LightweightObservable
+    - PMAlertController
+    - SkeletonView
+    - SwiftFormat
+    - SwiftyJSON
 
 SPEC CHECKSUMS:
-  SwiftLint: 4fa9579c63416865179bc416f0a92d55f009600d
+  GradientLoadingBar: 9992888de03a77c1e9364c087aefa1d9c3860ef7
+  Kingfisher: 676d63307fbef6ed5d5ed400bff36983480d7500
+  LightweightObservable: c5ac85423a5edbed9a920b4d5c7b8f94ab3688c4
+  PMAlertController: ab5fcf4d085b7878c9451466d701449c4bf6efb8
+  SkeletonView: 2b14cb767a7da384d17d5d7e1db0d55a6cf9566a
+  SwiftFormat: 68cac6de69aafb44b60ae49a919600966b0dcabe
+  SwiftyJSON: 6faa0040f8b59dead0ee07436cbf76b73c08fd08
 
-PODFILE CHECKSUM: 33d349917511170c636c2d123f249ad63e91408f
+PODFILE CHECKSUM: fd487770270058feda4a5a42b79480ab3e65ce66
 
 COCOAPODS: 1.10.0

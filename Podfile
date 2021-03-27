@@ -6,5 +6,11 @@ target 'stocks' do
   use_frameworks!
 
   # Pods for stocks
-  pod 'SwiftLint'
+  pod 'SwiftFormat/CLI'
+  pod 'SwiftyJSON', '~> 4.0'
+  pod 'SkeletonView'
+  pod 'Kingfisher', '~> 6.0'
+  pod 'GradientLoadingBar', '~> 2.0'
+  pod 'PMAlertController'
+
 end
